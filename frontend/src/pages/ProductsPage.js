@@ -12,8 +12,16 @@ const ProductsPage = () => {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [addingId, setAddingId] = useState(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [searchParams, setSearchParams] = useSearchParams();
   const { addItem } = useCart();
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const category = searchParams.get('category') || '';
   const search = searchParams.get('search') || '';
@@ -54,9 +62,42 @@ const ProductsPage = () => {
         </div>
       </div>
 
-      <div style={styles.wrapper}>
+      {/* Mobile Filter Button */}
+      {isMobile && (
+        <div style={styles.mobileFilterBar}>
+          <button onClick={() => setSidebarOpen(!sidebarOpen)} style={styles.mobileFilterBtn}>
+            🔧 Filters & Sort {sidebarOpen ? '▲' : '▼'}
+          </button>
+          {(category || search) && (
+            <button onClick={() => setSearchParams({})} style={styles.mobileClearBtn}>✕ Clear</button>
+          )}
+        </div>
+      )}
+
+      {/* Mobile Sidebar Overlay */}
+      {isMobile && sidebarOpen && (
+        <div
+          onClick={() => setSidebarOpen(false)}
+          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 98 }}
+        />
+      )}
+
+      <div style={{ ...styles.wrapper, flexDirection: isMobile ? 'column' : 'row' }}>
         {/* ── Sidebar ── */}
-        <aside style={styles.sidebar}>
+        {(!isMobile || sidebarOpen) && (
+        <aside style={{
+          ...styles.sidebar,
+          width: isMobile ? '280px' : '230px',
+          position: isMobile ? 'fixed' : 'sticky',
+          top: isMobile ? 0 : '1rem',
+          left: isMobile ? 0 : 'auto',
+          height: isMobile ? '100vh' : 'auto',
+          overflowY: isMobile ? 'auto' : 'visible',
+          zIndex: isMobile ? 99 : 'auto',
+          background: '#fff',
+          padding: isMobile ? '1.5rem' : '0',
+          boxShadow: isMobile ? '4px 0 20px rgba(0,0,0,0.15)' : 'none',
+        }}>
           {/* Search */}
           <div style={styles.searchBox}>
             <span style={styles.searchIcon}>🔍</span>
@@ -74,11 +115,8 @@ const ProductsPage = () => {
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
-                onClick={() => setParam('category', cat)}
-                style={{
-                  ...styles.filterBtn,
-                  ...(category === cat ? styles.filterBtnActive : {}),
-                }}
+                onClick={() => { setParam('category', cat); if(isMobile) setSidebarOpen(false); }}
+                style={{ ...styles.filterBtn, ...(category === cat ? styles.filterBtnActive : {}) }}
               >
                 <span>{cat ? CATEGORY_ICONS[cat] : '🏠'}</span>
                 <span>{cat || 'All Products'}</span>
@@ -93,11 +131,8 @@ const ProductsPage = () => {
             {SORTS.map(([val, label]) => (
               <button
                 key={val}
-                onClick={() => setParam('sort', val)}
-                style={{
-                  ...styles.filterBtn,
-                  ...(sort === val ? styles.filterBtnActive : {}),
-                }}
+                onClick={() => { setParam('sort', val); if(isMobile) setSidebarOpen(false); }}
+                style={{ ...styles.filterBtn, ...(sort === val ? styles.filterBtnActive : {}) }}
               >
                 <span>{label}</span>
                 {sort === val && <span style={styles.filterCheck}>✓</span>}
@@ -105,16 +140,13 @@ const ProductsPage = () => {
             ))}
           </div>
 
-          {/* Clear filters */}
           {(category || search || sort !== 'newest') && (
-            <button
-              onClick={() => setSearchParams({})}
-              style={styles.clearBtn}
-            >
+            <button onClick={() => { setSearchParams({}); setSidebarOpen(false); }} style={styles.clearBtn}>
               ✕ Clear All Filters
             </button>
           )}
         </aside>
+        )}
 
         {/* ── Main Content ── */}
         <main style={styles.main}>
@@ -289,10 +321,13 @@ const styles = {
   pageTitle: { color: '#fff', fontSize: '1.8rem', fontWeight: 800, marginBottom: '0.3rem' },
   pageSubtitle: { color: '#93c5fd', fontSize: '0.95rem' },
 
-  wrapper: { display: 'flex', maxWidth: '1300px', margin: '0 auto', padding: '2rem 1rem', gap: '2rem', alignItems: 'flex-start', flexWrap: 'wrap' },
+  wrapper: { display: 'flex', maxWidth: '1300px', margin: '0 auto', padding: '2rem 1rem', gap: '2rem', alignItems: 'flex-start' },
+  mobileFilterBar: { display: 'flex', gap: '0.75rem', padding: '1rem', background: '#fff', borderBottom: '1px solid #e2e8f0' },
+  mobileFilterBtn: { flex: 1, padding: '0.65rem 1rem', background: '#1e293b', color: '#fff', border: 'none', borderRadius: '10px', fontWeight: 700, cursor: 'pointer', fontSize: '0.9rem' },
+  mobileClearBtn: { padding: '0.65rem 1rem', background: '#fef2f2', color: '#ef4444', border: '1px solid #fecaca', borderRadius: '10px', fontWeight: 700, cursor: 'pointer', fontSize: '0.85rem' },
 
   // Sidebar
-  sidebar: { width: '230px', flexShrink: 0, position: 'sticky', top: '1rem', minWidth: '100%', maxWidth: '100%' },
+  sidebar: { width: '230px', flexShrink: 0, position: 'sticky', top: '1rem' },
   searchBox: { position: 'relative', marginBottom: '1.5rem' },
   searchIcon: { position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', fontSize: '0.9rem' },
   searchInput: { width: '100%', padding: '0.65rem 0.75rem 0.65rem 2.2rem', borderRadius: '10px', border: '2px solid #e2e8f0', fontSize: '0.9rem', background: '#fff', boxSizing: 'border-box', outline: 'none' },
@@ -304,7 +339,7 @@ const styles = {
   clearBtn: { width: '100%', padding: '0.6rem', background: '#fef2f2', color: '#ef4444', border: '1px solid #fecaca', borderRadius: '10px', cursor: 'pointer', fontWeight: 700, fontSize: '0.85rem' },
 
   // Main
-  main: { flex: 1, minWidth: '280px', width: '100%' },
+  main: { flex: 1, minWidth: 0 },
   activeFilters: { display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1.25rem' },
   chip: { display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: '#eff6ff', color: '#1d4ed8', border: '1px solid #bfdbfe', borderRadius: '50px', padding: '0.3rem 0.8rem', fontSize: '0.82rem', fontWeight: 700 },
   chipClose: { background: 'none', border: 'none', cursor: 'pointer', color: '#3b82f6', fontWeight: 800, padding: '0', fontSize: '0.8rem' },
