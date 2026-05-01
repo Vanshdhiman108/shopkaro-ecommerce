@@ -41,7 +41,7 @@ const Navbar = () => {
 };
 
 const styles = {
-  nav: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 2rem', background: '#1e293b', color: '#fff', position: 'sticky', top: 0, zIndex: 100 },
+  nav: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 2rem', background: '#1e293b', color: '#fff', position: 'sticky', top: 0, zIndex: 100, width: '100%', boxSizing: 'border-box' },
   brand: { fontSize: '1.5rem', fontWeight: 700, color: '#fff', textDecoration: 'none' },
   links: { display: 'flex', alignItems: 'center', gap: '1.5rem' },
   link: { color: '#cbd5e1', textDecoration: 'none', fontSize: '0.95rem', position: 'relative' },
