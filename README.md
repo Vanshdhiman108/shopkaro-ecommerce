@@ -4,6 +4,8 @@
 
 **Tech Stack:** React 18 · Node.js · Express.js · MongoDB · Razorpay · Stripe · JWT · TailwindCSS
 
+🔗 **Live Demo:** https://shopkaro-ecommerce-phi.vercel.app
+
 ---
 
 ## 🚀 Key Features
