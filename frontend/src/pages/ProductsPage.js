@@ -315,13 +315,13 @@ const EmptyState = ({ onClear }) => (
 
 /* ── Styles ── */
 const styles = {
-  pageWrapper: { minHeight: '100vh', background: '#f8fafc' },
+  pageWrapper: { minHeight: '100vh', background: '#f8fafc', overflowX: 'hidden', width: '100%' },
   pageHeader: { background: 'linear-gradient(135deg, #0f172a, #1e40af)', padding: '2.5rem 1rem' },
   pageHeaderInner: { maxWidth: '1300px', margin: '0 auto' },
   pageTitle: { color: '#fff', fontSize: '1.8rem', fontWeight: 800, marginBottom: '0.3rem' },
   pageSubtitle: { color: '#93c5fd', fontSize: '0.95rem' },
 
-  wrapper: { display: 'flex', maxWidth: '1300px', margin: '0 auto', padding: '2rem 1rem', gap: '2rem', alignItems: 'flex-start' },
+  wrapper: { display: 'flex', maxWidth: '1300px', margin: '0 auto', padding: '2rem 1rem', gap: '2rem', alignItems: 'flex-start', boxSizing: 'border-box', width: '100%' },
   mobileFilterBar: { display: 'flex', gap: '0.75rem', padding: '1rem', background: '#fff', borderBottom: '1px solid #e2e8f0' },
   mobileFilterBtn: { flex: 1, padding: '0.65rem 1rem', background: '#1e293b', color: '#fff', border: 'none', borderRadius: '10px', fontWeight: 700, cursor: 'pointer', fontSize: '0.9rem' },
   mobileClearBtn: { padding: '0.65rem 1rem', background: '#fef2f2', color: '#ef4444', border: '1px solid #fecaca', borderRadius: '10px', fontWeight: 700, cursor: 'pointer', fontSize: '0.85rem' },
