@@ -289,10 +289,10 @@ const styles = {
   pageTitle: { color: '#fff', fontSize: '1.8rem', fontWeight: 800, marginBottom: '0.3rem' },
   pageSubtitle: { color: '#93c5fd', fontSize: '0.95rem' },
 
-  wrapper: { display: 'flex', maxWidth: '1300px', margin: '0 auto', padding: '2rem 1rem', gap: '2rem', alignItems: 'flex-start' },
+  wrapper: { display: 'flex', maxWidth: '1300px', margin: '0 auto', padding: '2rem 1rem', gap: '2rem', alignItems: 'flex-start', flexWrap: 'wrap' },
 
   // Sidebar
-  sidebar: { width: '230px', flexShrink: 0, position: 'sticky', top: '1rem' },
+  sidebar: { width: '230px', flexShrink: 0, position: 'sticky', top: '1rem', minWidth: '100%', maxWidth: '100%' },
   searchBox: { position: 'relative', marginBottom: '1.5rem' },
   searchIcon: { position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', fontSize: '0.9rem' },
   searchInput: { width: '100%', padding: '0.65rem 0.75rem 0.65rem 2.2rem', borderRadius: '10px', border: '2px solid #e2e8f0', fontSize: '0.9rem', background: '#fff', boxSizing: 'border-box', outline: 'none' },
@@ -304,7 +304,7 @@ const styles = {
   clearBtn: { width: '100%', padding: '0.6rem', background: '#fef2f2', color: '#ef4444', border: '1px solid #fecaca', borderRadius: '10px', cursor: 'pointer', fontWeight: 700, fontSize: '0.85rem' },
 
   // Main
-  main: { flex: 1, minWidth: 0 },
+  main: { flex: 1, minWidth: '280px', width: '100%' },
   activeFilters: { display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1.25rem' },
   chip: { display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: '#eff6ff', color: '#1d4ed8', border: '1px solid #bfdbfe', borderRadius: '50px', padding: '0.3rem 0.8rem', fontSize: '0.82rem', fontWeight: 700 },
   chipClose: { background: 'none', border: 'none', cursor: 'pointer', color: '#3b82f6', fontWeight: 800, padding: '0', fontSize: '0.8rem' },
